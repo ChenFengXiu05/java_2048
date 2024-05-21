@@ -90,9 +90,14 @@ public class GameInterFace extends JFrame implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 //        改变pos数组中的值
-        if(code == 49){
-            Cont.RandomGene();
-            System.out.println("向左移动");
+        if(code == 48){
+            Cont.RandomGenerate();
+            System.out.println("-------------随机生成方块------------------");
+            initImage();
+            //考虑设置一个睡眠时间
+            System.out.println("---------------向左移动------------------");
+            Cont.slide(code);
+            Cont.initNullIndex();
         } else if (code == 34) {
 
             System.out.println("向左上移动");
