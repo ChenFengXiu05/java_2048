@@ -249,52 +249,62 @@ public class container {
         }*/
 
 
-        else if (input == 81 || input == 88) {
+        else if (input == 81 || input == 88 || input == 90 || input == 69) {
             int[][] upright = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
             int[][] downleft = new int[][]{{4,1},{4,2},{4,3},{1,4},{2,4},{3,4},{3,3}};
-            int[][] upleft = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
-            int[][] downright = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
+            int[][] downright = new int[][]{{1,3},{1,4},{2,4},{3,4},{0,3},{0,1},{0,2}};
+            int[][] upleft = new int[][]{{1,0},{3,1},{2,0},{3,0},{4,3},{4,1},{4,2}};
 
             int[] uprightdir = new int[]{1,1};
             int[] downleftdir = new int[]{-1,-1};
-            int[] upleftdir = new int[]{1,-1};
-            int[] downrightdir = new int[]{1,1};
+            int[] upleftdir = new int[]{-1,1};
+            int[] downrightdir = new int[]{1,-1};
 
-            int [][] startdir;
-            int[] dir;
-
+            int [][] startdir = {{}};
+            int[] dir = {};
             if(input == 81){
                 startdir = upright;
                 dir = uprightdir;
                 System.out.println("向左上方移动方块");
-            }
-            else{
+            } else if (input == 88){
                 startdir = downleft;
                 dir = downleftdir;
                 System.out.println("向右下方移动方块");
+            } else if (input == 90) {
+                startdir = downright;
+                dir = downrightdir;
+                System.out.println("向左下方移动方块");
+            } else if (input == 69) {
+                startdir = upleft;
+                dir = upleftdir;
+                System.out.println("向右上角移动方块");
             }
-
             for(int i=0;i<startdir.length;i++){
                 int x = startdir[i][0];
                 int y = startdir[i][1];
                 int[] empty = new int[]{x, y};
+                System.out.println("--------------------------");
+
+                System.out.println("第"+ i +"次:" + "x: " + x + "  y:" + y);
+                System.out.println("empty[0]: " + empty[0] + " empty[1]: " + empty[1]);
                 while(isOutBound(x, y)){
                     if (blocks[x][y].getStu()) {
-                        blocks[x][y].show();
+                        System.out.println(x+" "+ y);
                         int id = blocks[empty[0]][empty[1]].getId();
                         blocks[empty[0]][empty[1]].setId(blocks[x][y].getId());
                         blocks[x][y].setId(id);
+                        System.out.println("id:" + id + "dir[0]:" + dir[0] + " dir[1]:" + dir[1]);
                         empty[0]+=dir[0];
                         empty[1]+=dir[1];
                     }
+                    System.out.println("empty[0]: " + empty[0] + " empty[1]: " + empty[1]);
+                    System.out.println("x: " + x + "  y:" + y);
                     x += dir[0];
                     y += dir[1];
                 }
             }
-
-
-
-        }/*
+        }
+        /*
         //向左上角滑动
         if(input == 81){
             int[][] arr = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};

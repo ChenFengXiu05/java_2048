@@ -142,7 +142,7 @@ public class GameInterFace extends JFrame implements KeyListener {
         */
         Cont.show_blocks();
         Cont.slide(code);
-//        Cont.merge(code);
+        Cont.merge(code);
         Cont.initNullIndex();
         Cont.RandomGenerate();
         Cont.show_blocks();
