@@ -24,7 +24,9 @@ public class block {
         this.x_index = x_index;
         this.y_index = y_index;
         this.ImagePath = basePath + id + ".png";
-        this.stu = true;    //默认新生成的都是非零的，所以为true
+        if(id==0)
+            this.stu = false;
+        else this.stu = true;    //默认新生成的都是非零的，所以为true
     }
     public boolean getStu() {
         return stu;

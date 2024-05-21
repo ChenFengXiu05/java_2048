@@ -8,8 +8,27 @@ import java.net.PasswordAuthentication;
 public class GameInterFace extends JFrame implements KeyListener {
     private int score = 2;
     private container Cont = new container();
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public container getCont() {
+        return Cont;
+    }
+
+    public void setCont(container cont) {
+        Cont = cont;
+    }
+
     public GameInterFace(){
         this.setVisible(true);
+        Cont.RandomGenerate();
+        Cont.RandomGenerate();
         initImage();
         initJFrame();
 
@@ -45,22 +64,22 @@ public class GameInterFace extends JFrame implements KeyListener {
         int x_offset = 20;
         //初始化界面
         for(int i=0;i<5;i++){
-            for(int j=0;j<5;j++){
-                if(i==0 && j==0 || i==4 && j==0 || i==0 && j==4 || i==4 && j==4)
+            for(int j=0;j<5;j++) {
+                if (i == 0 && j == 0 || i == 4 && j == 0 || i == 0 && j == 4 || i == 4 && j == 4)
                     continue;
                 icon = new ImageIcon(Cont.getBlocks()[i][j].getImagePath());
                 //将图片赋值JLabel对象(管理容器)
                 jLabel = new JLabel(icon);
                 //根据block内部的x_index和y_index设置出现位置的的坐标
-                int x = 114*Cont.getBlocks()[i][j].getX_index();
-                int y = 114*Cont.getBlocks()[i][j].getY_index();
+                int x = 114 * Cont.getBlocks()[i][j].getX_index();
+                int y = 114 * Cont.getBlocks()[i][j].getY_index();
                 //指定图片位置
                 jLabel.setBounds(x + 39 + x_offset, y + 200 + y_offset, 114, 114);
                 //将容器添加为组件
                 this.add(jLabel);
-                System.out.println("添加图片"+ x + " " + y);
             }
         }
+
 
         //添加背景图片
         ImageIcon bg = new ImageIcon("D:/JAVA_codes/java_2048/images/bg1.png");
@@ -89,15 +108,15 @@ public class GameInterFace extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
+
 //        改变pos数组中的值
+        /*
         if(code == 48){
-            Cont.RandomGenerate();
             System.out.println("-------------随机生成方块------------------");
-            initImage();
+
             //考虑设置一个睡眠时间
             System.out.println("---------------向左移动------------------");
-            Cont.slide(code);
-            Cont.initNullIndex();
+
         } else if (code == 34) {
 
             System.out.println("向左上移动");
@@ -120,7 +139,16 @@ public class GameInterFace extends JFrame implements KeyListener {
 
             System.out.println("向下滑动");
         }
+        */
+        Cont.show_blocks();
+        Cont.slide(code);
+//        Cont.merge(code);
+        Cont.initNullIndex();
+        Cont.RandomGenerate();
+        Cont.show_blocks();
         //每次移动过后需要重新加载Image
         initImage();
+//        Cont.RandomGenerate();
+//        initImage();
     }
 }
