@@ -10,6 +10,17 @@ public class container {
     private static int size = 5;
     private block[][] blocks = new block[5][5];
     private ArrayList<int[]> NullIndex = new ArrayList<>();
+
+    public int[][] upright = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
+    public int[][] downleft = new int[][]{{4,1},{4,2},{4,3},{1,4},{2,4},{3,4},{3,3}};
+    public int[][] downright = new int[][]{{1,3},{1,4},{2,4},{3,4},{0,3},{0,1},{0,2}};
+    public int[][] upleft = new int[][]{{1,0},{3,1},{2,0},{3,0},{4,3},{4,1},{4,2}};
+    private static int[] Input = new int[]{81, 88, 69, 90, 68, 65, 87, 83};
+
+    public int[] uprightdir = new int[]{1,1};
+    public int[] downleftdir = new int[]{-1,-1};
+    public int[] upleftdir = new int[]{-1,1};
+    public int[] downrightdir = new int[]{1,-1};
     //    保存所有的没有位置的区域坐标-需要经常进行增删改
 
     public void setNullIndex(ArrayList<int[]> nullIndex) {
@@ -164,102 +175,7 @@ public class container {
             }
         }
 
-        //初始化四个值
-        //向左移动
-        /*
-        //向上
-        if(input == 87){
-            for(int i=0;i<size;i++){
-                int empty = 0;
-                for(int j=0;j<size;j++) {
-                    if (!filter(i, j)) {
-                        empty = 1;
-                        continue;
-                    }
-                    if(blocks[i][j].getStu()){
-                        int id = blocks[i][empty].getId();
-                        blocks[i][empty].setId(blocks[i][j].getId());
-                        blocks[i][j].setId(id);
-                        empty++;
-                    }
-                }
-            }
-            System.out.println("下移完成");
-        }
-
-        //向下
-        if(input == 83){
-            for(int i=size-1;i>=0;i--){
-                int empty = 4;
-                for(int j=size-1;j>=0;j--) {
-                    if (!filter(i, j)) {
-                        empty = 3;
-                        continue;
-                    }
-                    if(blocks[i][j].getStu()){
-                        int id = blocks[i][empty].getId();
-                        blocks[i][empty].setId(blocks[i][j].getId());
-                        blocks[i][j].setId(id);
-                        empty--;
-                    }
-                }
-            }
-            System.out.println("上移完成");
-        }
-
-
-        //向右
-        if(input == 68){
-            for(int i=size-1;i>=0;i--){
-                int empty = 4;
-                for(int j=size-1;j>=0;j--) {
-                    if (!filter(i, j)) {
-                        empty = 3;
-                        continue;
-                    }
-                    if(blocks[j][i].getStu()){
-                        int id = blocks[empty][i].getId();
-                        blocks[empty][i].setId(blocks[j][i].getId());
-                        blocks[j][i].setId(id);
-                        empty--;
-                    }
-                }
-            }
-            System.out.println("右移完成");
-        }
-
-        //向左
-        if(input == 65) {
-            for (int i = 0; i <size; i++) {
-                int empty = 0;
-                for (int j = 0; j <size; j++) {
-                    if (!filter(i, j)) {
-                        empty = 1;
-                        continue;
-                    }
-                    if (blocks[j][i].getStu()) {
-                        int id = blocks[empty][i].getId();
-                        blocks[empty][i].setId(blocks[j][i].getId());
-                        blocks[j][i].setId(id);
-                        empty++;
-                    }
-                }
-            }
-            System.out.println("左移完成");
-        }*/
-
-
         else if (input == 81 || input == 88 || input == 90 || input == 69) {
-            int[][] upright = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
-            int[][] downleft = new int[][]{{4,1},{4,2},{4,3},{1,4},{2,4},{3,4},{3,3}};
-            int[][] downright = new int[][]{{1,3},{1,4},{2,4},{3,4},{0,3},{0,1},{0,2}};
-            int[][] upleft = new int[][]{{1,0},{3,1},{2,0},{3,0},{4,3},{4,1},{4,2}};
-
-            int[] uprightdir = new int[]{1,1};
-            int[] downleftdir = new int[]{-1,-1};
-            int[] upleftdir = new int[]{-1,1};
-            int[] downrightdir = new int[]{1,-1};
-
             int [][] startdir = {{}};
             int[] dir = {};
             if(input == 81){
@@ -283,78 +199,135 @@ public class container {
                 int x = startdir[i][0];
                 int y = startdir[i][1];
                 int[] empty = new int[]{x, y};
-                System.out.println("--------------------------");
-
-                System.out.println("第"+ i +"次:" + "x: " + x + "  y:" + y);
-                System.out.println("empty[0]: " + empty[0] + " empty[1]: " + empty[1]);
                 while(isOutBound(x, y)){
                     if (blocks[x][y].getStu()) {
                         System.out.println(x+" "+ y);
                         int id = blocks[empty[0]][empty[1]].getId();
                         blocks[empty[0]][empty[1]].setId(blocks[x][y].getId());
                         blocks[x][y].setId(id);
-                        System.out.println("id:" + id + "dir[0]:" + dir[0] + " dir[1]:" + dir[1]);
                         empty[0]+=dir[0];
                         empty[1]+=dir[1];
                     }
-                    System.out.println("empty[0]: " + empty[0] + " empty[1]: " + empty[1]);
-                    System.out.println("x: " + x + "  y:" + y);
                     x += dir[0];
                     y += dir[1];
                 }
             }
         }
-        /*
-        //向左上角滑动
-        if(input == 81){
-            int[][] arr = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
-            for(int i=0;i<arr.length;i++){
-                int x = arr[i][0];
-                int y = arr[i][1];
-                int[] empty = new int[]{x, y};
-                while(isOutBound(x, y)){
-                    if (blocks[x][y].getStu()) {
-                        blocks[x][y].show();
-                        int id = blocks[empty[0]][empty[1]].getId();
-                        blocks[empty[0]][empty[1]].setId(blocks[x][y].getId());
-                        blocks[x][y].setId(id);
-                        empty[0]+=1;
-                        empty[1]+=1;
-                    }
-                    x += 1;
-                    y += 1;
-                }
-            }
-            System.out.println("向左上方移动");
-        }
-
-        //向左下角滑动
-        if(input == 88){
-            int[][] arr = new int[][]{{4,1},{4,2},{4,3},{1,4},{2,4},{3,4},{3,3}};
-            for(int i=0;i<arr.length;i++){
-                int x = arr[i][0];
-                int y = arr[i][1];
-                int[] empty = new int[]{x, y};
-                while(isOutBound(x, y)){
-                    if (blocks[x][y].getStu()) {
-                        blocks[x][y].show();
-                        int id = blocks[empty[0]][empty[1]].getId();
-                        blocks[empty[0]][empty[1]].setId(blocks[x][y].getId());
-                        blocks[x][y].setId(id);
-                        empty[0]-=1;
-                        empty[1]-=1;
-                    }
-                    x -= 1;
-                    y -= 1;
-                }
-            }
-            System.out.println("向左下方移动");
-        }*/
-
-
     }
 
+    public boolean isSlide(){
+        int start;
+        int step;
+        int input;
+        for(int num = 0;num<Input.length;num++){
+            input = Input[num];
+            if(input == 87 || input == 83){
+                if(input == 87){
+                    start = 0;
+                    step = 1;
+                }
+                else{
+                    start = 4;
+                    step = -1;
+                }
+                int a=0;
+                int i = start;
+                while(a<size){
+                    int b=0;
+                    int j = start;
+                    int empty = start;
+                    while(b<size){
+                        if(!filter(i, j)){
+                            empty += step;
+                            b++;
+                            j += step;
+                            continue;
+                        }
+                        if(blocks[i][j].getStu()) {
+                            int id = blocks[i][empty].getId();
+                            if(id != blocks[i][j].getId())
+                                return true;
+                            empty += step;
+                        }
+                        b++;
+                        j += step;
+                    }
+                    i += step;
+                    a++;
+                }
+            }
+            else if (input == 68 || input == 65){
+                if(input == 65){
+                    start = 0;
+                    step = 1;
+                }
+                else{
+                    start = 4;
+                    step = -1;
+                }
+                int a=0;
+                int i = start;
+                while(a<size){
+                    int b=0;
+                    int j = start;
+                    int empty = start;
+                    while(b<size){
+                        if(!filter(j, i)){
+                            empty += step;
+                            b++;
+                            j += step;
+                            continue;
+                        }
+                        if(blocks[j][i].getStu()) {
+                            int id = blocks[empty][i].getId();
+                            if(id != blocks[j][i].getId())
+                                return true;
+                            empty += step;
+                        }
+                        b++;
+                        j += step;
+                    }
+                    i += step;
+                    a++;
+                }
+            }
 
+            else if (input == 81 || input == 88 || input == 90 || input == 69) {
+                int [][] startdir = {{}};
+                int[] dir = {};
+                if(input == 81){
+                    startdir = upright;
+                    dir = uprightdir;
+                } else if (input == 88){
+                    startdir = downleft;
+                    dir = downleftdir;
+                } else if (input == 90) {
+                    startdir = downright;
+                    dir = downrightdir;
+                } else if (input == 69) {
+                    startdir = upleft;
+                    dir = upleftdir;
+                }
+                for(int i=0;i<startdir.length;i++){
+                    int x = startdir[i][0];
+                    int y = startdir[i][1];
+                    int[] empty = new int[]{x, y};
+                    while(isOutBound(x, y)){
+                        if (blocks[x][y].getStu()) {
+                            int id = blocks[empty[0]][empty[1]].getId();
+                            if(id != blocks[x][y].getId())
+                                return true;
+                            empty[0]+=dir[0];
+                            empty[1]+=dir[1];
+                        }
+                        x += dir[0];
+                        y += dir[1];
+                    }
+                }
+            }
+        }
+        return false;
+    }
     public boolean isOutBound(int i, int j){
         if(!filter(i, j) || i<0 || j<0 || j>size-1 || i>size-1)
             return false;
@@ -375,8 +348,115 @@ public class container {
     }
     //将容器内滑动后方格进行合并，达到消除的效果
     //合并后产生的数字如果大于score，则更新score
-    public boolean merge(int input){
+    public void merge(int input){
         boolean flag = false;
+        int[][] startdir = {{}};
+        int[] dir = {};
+
+        if(input == 81 || input == 88 || input == 69 || input == 90) {
+            if (input == 81) {
+                startdir = upright;
+                dir = uprightdir;
+                System.out.println("左上角方向合并");
+            } else if (input == 88) {
+                startdir = downleft;
+                dir = downleftdir;
+                System.out.println("向右下方合并");
+            } else if (input == 90) {
+                startdir = downright;
+                dir = downrightdir;
+                System.out.println("向左下方移动合并");
+            } else if (input == 69) {
+                startdir = upleft;
+                dir = upleftdir;
+                System.out.println("向右上角合并");
+            }
+            for (int i = 0; i < startdir.length; i++) {
+                int x = startdir[i][0];
+                int y = startdir[i][1];
+                int[] empty = new int[]{x, y};
+                System.out.println("empty[0]:" + empty[0] + " empty[1]:" + empty[1]);
+                while (isOutBound(x, y) && isOutBound(x + dir[0], y + dir[1])) {
+                    //相邻的方块相等，需要合并，合并之后跨两个格子
+                    if (blocks[x][y].getStu() && blocks[x + dir[0]][y + dir[1]].getId() == blocks[x][y].getId()) {
+                        int id = blocks[x][y].getId() * 2;
+                        flag = true;
+                        if(id>nowScore) nowScore = id;
+                        //找到对应的先设为零
+                        blocks[x][y].setId(0);
+                        blocks[x + dir[0]][y + dir[1]].setId(0);
+                        //将合适地方ID设置为对应的
+                        blocks[empty[0]][empty[1]].setId(id);
+
+                        //empty相应变成下一个
+                        empty[0] += dir[0];
+                        empty[1] += dir[1];
+                        x += dir[0];
+                        y += dir[1];
+                        //相邻的不相等，不需要合并，正常流程跨一个格子就够了
+                    } else if (blocks[x][y].getStu()) {
+                        System.out.println(blocks[x][y].getId());
+                        int id = blocks[x][y].getId();
+                        blocks[x][y].setId(0);
+                        blocks[empty[0]][empty[1]].setId(id);
+                        empty[0] += dir[0];
+                        empty[1] += dir[1];
+                    }
+                    //状态为false，说明方块之后的都没有数字了，直接跳出循环
+                    else break;
+                    //每次循环到下一个对应坐标位置
+                    x += dir[0];
+                    y += dir[1];
+                }
+            }
+        }
+
+
+
+        /*
+        //左上角合并
+        if(input == 81){
+            int[][] startdir = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
+            int[] dir = new int[]{1,1};
+            for(int i=0;i<startdir.length;i++){
+                int x = startdir[i][0];
+                int y = startdir[i][1];
+                int[] empty = new int[]{x, y};
+                System.out.println("---------合并区间-----------------");
+                System.out.println("empty[0]: " + empty[0] + " empty[1]: " + empty[1]);
+                while(isOutBound(x, y) && isOutBound(x+dir[0], y+dir[1])){
+                    //相邻的方块相等，需要合并，合并之后跨两个格子
+                    if (blocks[x][y].getStu() && blocks[x+dir[0]][y+dir[1]].getId() == blocks[x][y].getId()) {
+                        System.out.println("合并区间内" + x+" "+ y);
+                        int id = blocks[x][y].getId()*2;
+                        //找到对应的先设为零
+                        blocks[x][y].setId(0);
+                        blocks[x+dir[0]][y+dir[1]].setId(0);
+                        //将合适地方ID设置为对应的
+                        blocks[empty[0]][empty[1]].setId(id);
+                        //empty相应变成下一个
+                        empty[0]+=dir[0];
+                        empty[1]+=dir[1];
+                        x+=dir[0];
+                        y+=dir[1];
+                    //相邻的不相等，不需要合并，正常流程跨一个格子就够了
+                    } else if (blocks[x][y].getStu()) {
+                        System.out.println(blocks[x][y].getId());
+                        int id = blocks[x][y].getId();
+                        blocks[x][y].setId(0);
+                        blocks[empty[0]][empty[1]].setId(id);
+                        empty[0]+=dir[0];
+                        empty[1]+=dir[1];
+                    }
+                    //状态为false，说明方块之后的都没有数字了，直接跳出循环
+                    else break;
+                    //每次循环到下一个对应坐标位置
+                    x += dir[0];
+                    y += dir[1];
+                }
+            }
+        }
+        */
         //向下
         if(input == 83){
             for(int i=size-1;i>=0;i--){
@@ -510,38 +590,171 @@ public class container {
             System.out.println("向左合并完成");
         }
 
-        //向左上角
-
-        return flag;
     }
 
+
+    public boolean isMerge(){
+        int input;
+        int[][] startdir = {{}};
+        int[] dir = {};
+        for(int num = 0;num<Input.length;num++) {
+            input = Input[num];
+            if (input == 81 || input == 88 || input == 69 || input == 90) {
+                if (input == 81) {
+                    startdir = upright;
+                    dir = uprightdir;
+                } else if (input == 88) {
+                    startdir = downleft;
+                    dir = downleftdir;
+                } else if (input == 90) {
+                    startdir = downright;
+                    dir = downrightdir;
+                } else if (input == 69) {
+                    startdir = upleft;
+                    dir = upleftdir;
+                }
+                for (int i = 0; i < startdir.length; i++) {
+                    int x = startdir[i][0];
+                    int y = startdir[i][1];
+                    int[] empty = new int[]{x, y};
+                    while (isOutBound(x, y) && isOutBound(x + dir[0], y + dir[1])) {
+                        //相邻的方块相等，需要合并，合并之后跨两个格子
+                        if (blocks[x][y].getStu() && blocks[x + dir[0]][y + dir[1]].getId() == blocks[x][y].getId()) {
+                            int id = blocks[x][y].getId() * 2;
+                            return true;
+                        } else if (blocks[x][y].getStu()) {
+                            int id = blocks[x][y].getId();
+                            empty[0] += dir[0];
+                            empty[1] += dir[1];
+                        }
+                        //状态为false，说明方块之后的都没有数字了，直接跳出循环
+                        else break;
+                        //每次循环到下一个对应坐标位置
+                        x += dir[0];
+                        y += dir[1];
+                    }
+                }
+            }
+
+            //向下
+            if (input == 83) {
+                for (int i = size - 1; i >= 0; i--) {
+                    int index = size - 1;
+                    for (int j = size - 1; j > 0; j--) {
+                        if (!filter(i, j) || !filter(i, j - 1)) {
+                            if (!filter(i, j - 1)) {
+                                index--;
+                            } else {
+                                index = 3;
+                            }
+                            continue;
+                        }
+                        if (blocks[i][j].getStu() && blocks[i][j].getId() == blocks[i][j - 1].getId()) {
+                            return true;
+                        } else if (blocks[i][j].getStu()) {
+                            index--;
+                        }
+                    }
+                    for (int j = index; j >= 0; j--) {
+                        if (!filter(i, j))
+                            continue;
+                    }
+                }
+            }
+            //向上
+            if (input == 87) {
+                for (int i = 0; i < size; i++) {
+                    int index = 0;
+                    for (int j = 0; j < size - 1; j++) {
+                        if (!filter(i, j) || !filter(i, j + 1)) {
+                            if (!filter(i, j + 1)) {
+                                index++;
+                            } else {
+                                index = 1;
+                            }
+                            continue;
+                        }
+                        if (blocks[i][j].getStu() && blocks[i][j].getId() == blocks[i][j + 1].getId()) {
+                            return true;
+                        } else if (blocks[i][j].getStu()) {
+                            index++;
+                        }
+                    }
+                    for (int j = index; j < size; j++) {
+                        if (!filter(i, j))
+                            continue;
+                    }
+                }
+            }
+
+            //向右
+            if (input == 68) {
+                for (int i = size - 1; i >= 0; i--) {
+                    int index = 4;
+                    for (int j = size - 1; j > 0; j--) {
+                        if (!filter(j, i) || !filter(j - 1, i)) {
+                            if (!filter(j - 1, i)) {
+                                index--;
+                            } else {
+                                index = 3;
+                            }
+                            continue;
+                        }
+                        if (blocks[j][i].getStu() && blocks[j][i].getId() == blocks[j - 1][i].getId()) {
+                            return true;
+                        } else if (blocks[j][i].getStu()) {
+                            index--;
+                        }
+                    }
+                    for (int j = index; j >= 0; j--) {
+                        if (!filter(i, j))
+                            continue;
+                    }
+                }
+            }
+
+            //向左
+            if (input == 65) {
+                for (int i = 0; i < size; i++) {
+                    int index = 0;
+                    for (int j = 0; j < size - 1; j++) {
+                        if (!filter(j, i) || !filter(j + 1, i)) {
+                            if (!filter(j + 1, i)) {
+                                index++;
+                            } else {
+                                index = 1;
+                            }
+                            continue;
+                        }
+                        if (blocks[j][i].getStu() && blocks[j][i].getId() == blocks[j + 1][i].getId()) {
+                            return true;
+                        } else if (blocks[j][i].getStu()) {
+                            index++;
+                        }
+                    }
+                    for (int j = index; j < size - 1; j++) {
+                        if (!filter(i, j))
+                            continue;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     //是否还能继续游戏
     public boolean isContinue(){
-        if(Isfull() && merge(12))
-            return false;
-        else return true;
+        if(!Isfull())
+            return true;
+        else return false;
     }
+
     //返回容器是否全都被非0方块填满
     public boolean Isfull(){
-        if(getNullIndex().isEmpty())
+        if(NullIndex.isEmpty())
             return true;
         else
             return false;
-    }
-
-    //交换两个方块，用于方块滑动和合并
-    //交换两个方块，但是不改变原来的x和y坐标
-    public void Swapblock(block a, block b){
-        block temp = a;
-        a = b;
-        b = temp;
-        int a_x = a.getX_index();
-        int a_y = a.getY_index();
-        a.setX_index(b.getX_index());
-        a.setY_index(b.getY_index());
-        b.setX_index(a_x);
-        b.setY_index(a_y);
     }
 
     //随机功能还未能实现
@@ -550,9 +763,6 @@ public class container {
         if(Isfull())
             return;
         int id = 2;
-//        for (int i = 0; i < getNullIndex().size(); i++) {
-//            System.out.println("x  " + getNullIndex().get(i)[0] + "  y   " + getNullIndex().get(i)[1]);
-//        }
         System.out.println(getNullIndex().size());
         int length = NullIndex.size();
         Random r = new Random();

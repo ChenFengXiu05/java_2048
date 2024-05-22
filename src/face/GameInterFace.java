@@ -1,6 +1,8 @@
 package face;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.PasswordAuthentication;
@@ -56,6 +58,7 @@ public class GameInterFace extends JFrame implements KeyListener {
     public void initImage() {
         //清空界面
         this.getContentPane().removeAll();
+
         //新建图片和容器变量
         ImageIcon icon;
         JLabel jLabel;
@@ -79,8 +82,6 @@ public class GameInterFace extends JFrame implements KeyListener {
                 this.add(jLabel);
             }
         }
-
-
         //添加背景图片
         ImageIcon bg = new ImageIcon("D:/JAVA_codes/java_2048/images/bg1.png");
         JLabel background = new JLabel(bg);
@@ -108,47 +109,18 @@ public class GameInterFace extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-
-//        改变pos数组中的值
-        /*
-        if(code == 48){
-            System.out.println("-------------随机生成方块------------------");
-
-            //考虑设置一个睡眠时间
-            System.out.println("---------------向左移动------------------");
-
-        } else if (code == 34) {
-
-            System.out.println("向左上移动");
-        } else if (code == 213) {
-
-            System.out.println("向左下移动");
-        } else if (code == 123) {
-
-            System.out.println("向正右方向滑动");
-        } else if (code == 124) {
-
-            System.out.println("向右上方向滑动");
-        } else if (code == 1245) {
-
-            System.out.println("向右下方向滑动");
-        } else if (code == 38) {
-//            pos[3][3] = 16;
-            System.out.println("向上滑动");
-        } else if (code == 1241) {
-
-            System.out.println("向下滑动");
+        if (!(code == 81 || code == 88 || code == 69 || code == 90 || code == 68 || code == 65 || code == 87 || code == 83)) {
+            System.out.println("请输入正确的指令");
         }
-        */
-        Cont.show_blocks();
-        Cont.slide(code);
-        Cont.merge(code);
-        Cont.initNullIndex();
-        Cont.RandomGenerate();
-        Cont.show_blocks();
-        //每次移动过后需要重新加载Image
-        initImage();
-//        Cont.RandomGenerate();
-//        initImage();
+        else{
+            Cont.slide(code);
+            Cont.merge(code);
+            Cont.initNullIndex();
+            Cont.RandomGenerate();
+            //每次移动过后需要重新加载Image
+            initImage();
+            System.out.println(Cont.isSlide());
+            System.out.println(Cont.isMerge());
+        }
     }
 }
