@@ -1,5 +1,5 @@
 import face.GameInterFace;
-
+import face;
 
 
 public class Main {

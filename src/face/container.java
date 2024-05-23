@@ -11,16 +11,27 @@ public class container {
     private block[][] blocks = new block[5][5];
     private ArrayList<int[]> NullIndex = new ArrayList<>();
 
-    public int[][] upright = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
-    public int[][] downleft = new int[][]{{4,1},{4,2},{4,3},{1,4},{2,4},{3,4},{3,3}};
-    public int[][] downright = new int[][]{{1,3},{1,4},{2,4},{3,4},{0,3},{0,1},{0,2}};
-    public int[][] upleft = new int[][]{{1,0},{3,1},{2,0},{3,0},{4,3},{4,1},{4,2}};
+    public static int[][] upright = new int[][]{{1,0},{1,1},{2,0},{3,0},{0,3},{0,1},{0,2}};
+    public static int[][] downleft = new int[][]{{4,1},{4,2},{4,3},{1,4},{2,4},{3,4},{3,3}};
+    public static int[][] downright = new int[][]{{1,3},{1,4},{2,4},{3,4},{0,3},{0,1},{0,2}};
+    public static int[][] upleft = new int[][]{{1,0},{3,1},{2,0},{3,0},{4,3},{4,1},{4,2}};
+    public static int[][] left = new int[][]{{3, 1}, {4, 1}, {4, 2}, {4, 3}, {3, 4}};
+    public static int[][] right = new int[][]{{1, 0}, {0, 2}, {0, 1}, {0, 3}, {1, 4}};
+
+    public static int[][] up = new int[][]{{0, 1}, {1, 0}, {2, 0}, {3, 0}, {4, 1}};
+
+    public static int[][] down = new int[][]{{0, 3}, {1, 4}, {2, 4}, {3, 4}, {4, 3}};
+
     private static int[] Input = new int[]{81, 88, 69, 90, 68, 65, 87, 83};
 
-    public int[] uprightdir = new int[]{1,1};
-    public int[] downleftdir = new int[]{-1,-1};
-    public int[] upleftdir = new int[]{-1,1};
-    public int[] downrightdir = new int[]{1,-1};
+    public static int[] uprightdir = new int[]{1,1};
+    public static int[] downleftdir = new int[]{-1,-1};
+    public static int[] upleftdir = new int[]{-1,1};
+    public static int[] downrightdir = new int[]{1,-1};
+    public static int[] leftdir = new int[]{-1, 0};
+    public static int[] rightdir = new int[]{1, 0};
+    public static int[] updir = new int[]{0, 1};
+    public static int[] downdir = new int[]{0, -1};
     //    保存所有的没有位置的区域坐标-需要经常进行增删改
 
     public void setNullIndex(ArrayList<int[]> nullIndex) {
@@ -353,63 +364,72 @@ public class container {
         int[][] startdir = {{}};
         int[] dir = {};
 
-        if(input == 81 || input == 88 || input == 69 || input == 90) {
-            if (input == 81) {
-                startdir = upright;
-                dir = uprightdir;
-                System.out.println("左上角方向合并");
-            } else if (input == 88) {
-                startdir = downleft;
-                dir = downleftdir;
-                System.out.println("向右下方合并");
-            } else if (input == 90) {
-                startdir = downright;
-                dir = downrightdir;
-                System.out.println("向左下方移动合并");
-            } else if (input == 69) {
-                startdir = upleft;
-                dir = upleftdir;
-                System.out.println("向右上角合并");
-            }
-            for (int i = 0; i < startdir.length; i++) {
-                int x = startdir[i][0];
-                int y = startdir[i][1];
-                int[] empty = new int[]{x, y};
-                System.out.println("empty[0]:" + empty[0] + " empty[1]:" + empty[1]);
-                while (isOutBound(x, y) && isOutBound(x + dir[0], y + dir[1])) {
-                    //相邻的方块相等，需要合并，合并之后跨两个格子
-                    if (blocks[x][y].getStu() && blocks[x + dir[0]][y + dir[1]].getId() == blocks[x][y].getId()) {
-                        int id = blocks[x][y].getId() * 2;
-                        flag = true;
-                        if(id>nowScore) nowScore = id;
-                        //找到对应的先设为零
-                        blocks[x][y].setId(0);
-                        blocks[x + dir[0]][y + dir[1]].setId(0);
-                        //将合适地方ID设置为对应的
-                        blocks[empty[0]][empty[1]].setId(id);
+        if (input == 81) {
+            startdir = upright;
+            dir = uprightdir;
+            System.out.println("左上角方向合并");
+        } else if (input == 88) {
+            startdir = downleft;
+            dir = downleftdir;
+            System.out.println("向右下方合并");
+        } else if (input == 90) {
+            startdir = downright;
+            dir = downrightdir;
+            System.out.println("向左下方移动合并");
+        } else if (input == 69) {
+            startdir = upleft;
+            dir = upleftdir;
+            System.out.println("向右上角合并");
+        } else if (input == 65) {
+            System.out.println("向左合并");
+        } else if (input == 68) {
+            System.out.println("向右合并");
+        } else if (input == 87) {
+            System.out.println("向上合并");
+        } else if (input == 83) {
+            System.out.println("向下合并");
+        }
+        for (int i = 0; i < startdir.length; i++) {
+            int x = startdir[i][0];
+            int y = startdir[i][1];
+            int[] empty = new int[]{x, y};
+            System.out.println("empty[0]:" + empty[0] + " empty[1]:" + empty[1]);
+            while (isOutBound(x, y) && isOutBound(x + dir[0], y + dir[1])) {
+                //相邻的方块相等，需要合并，合并之后跨两个格子
+                if (blocks[x][y].getStu() && blocks[x + dir[0]][y + dir[1]].getId() == blocks[x][y].getId()) {
+                    int id = blocks[x][y].getId() * 2;
+                    flag = true;
+                    if(id>nowScore) nowScore = id;
+                    //找到对应的先设为零
+                    blocks[x][y].setId(0);
+                    blocks[x + dir[0]][y + dir[1]].setId(0);
+                    //将合适地方ID设置为对应的
+                    blocks[empty[0]][empty[1]].setId(id);
 
-                        //empty相应变成下一个
-                        empty[0] += dir[0];
-                        empty[1] += dir[1];
-                        x += dir[0];
-                        y += dir[1];
-                        //相邻的不相等，不需要合并，正常流程跨一个格子就够了
-                    } else if (blocks[x][y].getStu()) {
-                        System.out.println(blocks[x][y].getId());
-                        int id = blocks[x][y].getId();
-                        blocks[x][y].setId(0);
-                        blocks[empty[0]][empty[1]].setId(id);
-                        empty[0] += dir[0];
-                        empty[1] += dir[1];
-                    }
-                    //状态为false，说明方块之后的都没有数字了，直接跳出循环
-                    else break;
-                    //每次循环到下一个对应坐标位置
+                    //empty相应变成下一个
+                    empty[0] += dir[0];
+                    empty[1] += dir[1];
                     x += dir[0];
                     y += dir[1];
+                    //相邻的不相等，不需要合并，正常流程跨一个格子就够了
+                } else if (blocks[x][y].getStu()) {
+                    System.out.println(blocks[x][y].getId());
+                    int id = blocks[x][y].getId();
+                    blocks[x][y].setId(0);
+                    blocks[empty[0]][empty[1]].setId(id);
+                    empty[0] += dir[0];
+                    empty[1] += dir[1];
                 }
+                //状态为false，说明方块之后的都没有数字了，直接跳出循环
+                else break;
+                //每次循环到下一个对应坐标位置
+                x += dir[0];
+                y += dir[1];
             }
         }
+    }
+
+
 
 
 
@@ -456,7 +476,7 @@ public class container {
                 }
             }
         }
-        */
+
         //向下
         if(input == 83){
             for(int i=size-1;i>=0;i--){
@@ -530,12 +550,13 @@ public class container {
                 int index = 4;
                 for(int j=size-1;j>0;j--) {
                     if (!filter(j, i) || !filter(j-1, i)) {
-                        if (!filter(j-1, i)) {
-                            blocks[index][i].setId(blocks[j][i].getId());
-                            index--;
-                        } else {
-                            index = 3;
-                        }
+//                        if (!filter(j-1, i)) {
+//                            blocks[index][i].setId(blocks[j][i].getId());
+//                            index--;
+//                            System.out.println("sd");
+//                        } else {
+                        index = 3;
+//                        }
                         continue;
                     }
                     if (blocks[j][i].getStu() && blocks[j][i].getId() == blocks[j - 1][i].getId()) {
@@ -589,7 +610,7 @@ public class container {
             }
             System.out.println("向左合并完成");
         }
-
+*/
     }
 
 
