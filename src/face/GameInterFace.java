@@ -32,13 +32,16 @@ public class GameInterFace extends JFrame implements KeyListener {
     public GameInterFace(){
         Cont.RandomGenerate();
         Cont.RandomGenerate();
-        this.getContentPane().removeAll();
         initImage();
-        this.getContentPane().repaint();
         initJFrame();
         initJMenuBar();
         this.setVisible(true);
-
+        JButton btn = new JButton(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("点击按钮");
+            }
+        });
     }
     public void initJFrame(){
 //        设置页面的宽高
@@ -51,6 +54,7 @@ public class GameInterFace extends JFrame implements KeyListener {
         this.setLocationRelativeTo(null);
 //        设置关闭模式
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //设置JFrame中的布局对象
 //        取消默认的居中放置
         this.setLayout(null);
         //给整个页面添加键盘监听事件
@@ -66,22 +70,28 @@ public class GameInterFace extends JFrame implements KeyListener {
         //创建选项下面的条目对象
 
         JMenuItem replayItem = new JMenuItem("重新游戏");
+        replayItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("点击了重新游戏按钮");
+            }
+        });
+
 
         //将每一个选项下面的条目添加到选项当中去
         functionJmenu.add(replayItem);
 
         //将菜单里面的两个选项添加到菜单当中
         jMenuBar.add(functionJmenu);
+        jMenuBar.add(about);
 
         //给整个界面设置菜单
         this.setJMenuBar(jMenuBar);
     }
 
-    public void InitJFmeau(){
-
-    }
     public void initImage() {
-
+        //移除所有元素
+        this.getContentPane().removeAll();
         //新建图片和容器变量
         ImageIcon icon;
         JLabel jLabel;
@@ -111,7 +121,8 @@ public class GameInterFace extends JFrame implements KeyListener {
         background.setBounds(x_offset, y_offset, 628, 798);
         this.getContentPane().add(background);
 
-        //刷新界面
+        //刷新、重新绘制整个界面
+        this.getContentPane().repaint();
     }
 
     @Override
@@ -124,6 +135,55 @@ public class GameInterFace extends JFrame implements KeyListener {
 
     }
 
+
+    public void VictoryJF(){
+        JDialog victory = new JDialog();
+        //        设置页面的宽高
+        victory.setSize(602, 600);
+//        设置页面置顶
+        victory.setAlwaysOnTop(true);
+//        设置页面居中
+        victory.setLocationRelativeTo(null);
+        //设置JFrame中的布局对象
+//        取消默认的居中放置
+        victory.setLayout(null);
+        //胜利图片
+        JLabel jLabel = new JLabel(new ImageIcon("D:\\JAVA_codes\\java_2048\\images\\v.png"));
+        jLabel.setBounds(0, 0, 602, 600);
+        //score图片
+        JLabel scorebg = new JLabel(new ImageIcon("images/score.png"));
+        scorebg.setBounds(120,260,367,101);
+        //按钮-继续游戏
+        JButton continueGame = new JButton("继续新游戏");
+        Font newfont = new Font("songti", Font.BOLD, 16);
+        continueGame.setFont(newfont);
+        continueGame.setBounds(240,380,120,40);
+        Color color = new Color(Color.orange.getRGB());
+        continueGame.setBackground(color);
+        //文本说明-分数-关闭-历史记录
+        String s = "您的分数是：" + Cont.getNowScore();
+        JLabel Score = new JLabel(s);
+        Score.setBounds(230,270,140,20);
+        Score.setFont(new Font("songti", Font.BOLD, 16));
+        JLabel exegesis = new JLabel("点击关闭即可回到主菜单");
+        exegesis.setBounds(230,450,140,34);
+        JLabel record = new JLabel("恭喜您！打破了您的最高记录");
+        record.setFont(new Font("songti", Font.BOLD, 20));
+        record.setBounds(160,300,280,20);
+
+        //添加组件
+        victory.add(record);
+        victory.add(Score);
+        victory.add(scorebg);
+        victory.add(exegesis);
+        victory.add(jLabel);
+        victory.add(continueGame);
+
+        //设置页面不可随便关闭
+        victory.setModal(true);
+        //显示界面
+        victory.setVisible(true);
+    }
     //重写键盘监听方法实现对应的逻辑
     @Override
     public void keyReleased(KeyEvent e) {
@@ -134,21 +194,15 @@ public class GameInterFace extends JFrame implements KeyListener {
         } else{
 //            判断是否可以继续往某个方向移动
             if(!Cont.isSlide(code) && !Cont.isMerge(code)) {
-                System.out.println("无法移动！！！");
+                System.out.println("------此方向无法移动！！！");
                 System.out.println(code);
                 return;
             }
             //判断游戏结束条件
             //如果方格都被填满且移动无法消除方块，游戏则结束
             if(!Cont.isContinue()) {
-                System.out.println("！！游戏结束！！");
-                this.getContentPane().removeAll();
-                ImageIcon icon = new ImageIcon("D:\\JAVA_codes\\java_2048\\images\\victory.png");
-                JLabel jLabel = new JLabel(icon);
-                jLabel.setBounds(0, 400, 746, 181);
-                this.add(jLabel);
-                initImage();
-                this.getContentPane().repaint();
+                System.out.println("------游戏结束    Game over！！！");
+                VictoryJF();
                 return;
             }
             Cont.slide(code);
@@ -161,7 +215,6 @@ public class GameInterFace extends JFrame implements KeyListener {
             this.getContentPane().removeAll();
             initImage();
             this.getContentPane().repaint();
-
         }
     }
 }
